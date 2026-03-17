@@ -205,6 +205,14 @@
                   Upload receipt and choose to request a tax invoice, receipt, or none, and save the information.
                 </span>
               </p>
+              <!-- <p class="fs-5 mb-2"> ● ยืนยันตัวตนที่ @Eventgammaco
+                <a href="https://lin.ee/0XkVLUo" target="_blank" style="text-decoration: none;">
+                  <img src="https://scdn.line-apps.com/n/line_add_friends/btn/en.png" alt="เพิ่มเพื่อน LINE" style="height: 24px; vertical-align: middle;"></a> 
+                    พิมพ์ Team ID (โปรดระบุครั้งละ 1 Team ID) รับ QR CODE เพื่อใช้ลงทะเบียนในวันแข่งขัน
+                    <span style="display: block; font-size: 0.8em; color: #babdbf; width: 90%; margin-top: 5px; padding-left: 20px;">
+                    Verify your identity at @Eventgammaco by typing your Team ID (one ID at a time) to receive a QR CODE for registration on the competition day.
+                </span>
+              </p> -->
               <p class="fs-6 mb-2"> ● หากท่านมีข้อสงสัยหรือสอบถามข้อมูลเพิ่มเติม สามารถติดต่อได้ที่เบอร์ 02-459-4731 ต่อ 232 หรือ Line OA : Events Gammaco (ในวันทำการ จันทร์-ศุกร์ เวลา 8.30 - 17.00 น.)
                 <span style="display: block; font-size: 0.8em; color: #babdbf; width: 90%; margin-top: 5px; padding-left: 20px;">
                   If you have any questions or need further information, you can contact us at 02-459-4731 ext. 232 or via Line OA: Events Gammaco (Monday to Friday, 8:30 AM - 5:00 PM).
@@ -212,19 +220,368 @@
               </p>
               <hr>
               <p class="fs-6 mb-3" style="color: red;"><i class="fa-regular fa-bookmark"></i><strong> เลือกจำนวนทีมที่ท่านต้องการชำระเงิน (Select the number of teams you want to pay for)</strong></p>
+                <div class="form-group col-md-4 d-flex flex-column mb-3">
+                  <select id="teamCount" class="fs-5"
+                  style="width: 300px; height: 40px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 5px;" onchange="showSelectedTeam()">
+                    <option value="" selected disabled>-- กรุณาเลือก --</option>
+                    <option value="1">1 ทีม</option>
+                    <option value="2">2 ทีม</option>
+                    <option value="3">3 ทีม</option>
+                    <option value="4">4 ทีม</option>
+                    <option value="5">5 ทีม</option>
+                    <option value="6">6 ทีม</option>
+                    <option value="7">7 ทีม</option>
+                    <option value="8">8 ทีม</option>
+                    <option value="9">9 ทีม</option>
+                    <option value="10">10 ทีม</option>
+                  </select>
+                </div>
+          </div>
+<!-- ---------------------------------------- Dropdown 4 Step --------------------------------------------- -->
+          <div class="card-custom hidden-team" id="team1">
+            <div class="team-header-banner"><strong class="fs-5">Team 1</strong>
+            </div>
 
-                <div class="form-group col-md-4 d-flex flex-column mb-4">
-  <select id="teamCount" class="form-select-custom fs-5" onchange="showSelectedTeam()">
-    <option value="" selected disabled>-- กรุณาเลือกจำนวนทีม --</option>
-    <script>
-      for(let i=1; i<=10; i++) {
-        document.write(`<option value="${i}">${i} ทีม</option>`);
-      }
-    </script>
-  </select>
-</div>
+            <div class="card-body-padding">
+              <div class="alert-info-text"><i class="fa-solid fa-circle-info"></i> 
+                ประเภท Robomission และ Future Innovators: กรุณาเลือกรุ่นการแข่งขันของท่าน
+              </div>
 
-<div id="teamFormsContainer"></div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label-custom"><i class="fa-solid fa-graduation-cap"></i> รุ่นอายุ / Age Group</label>
+                    <select class="form-select-custom" id="colA" required>
+                      <option value="" selected>Choose</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label-custom"><i class="fa-solid fa-id-badge"></i> ทีมไอดี / Team ID</label>
+                    <select class="form-select-custom" id="colB" required>
+                      <option value="" selected>Choose</option>
+                    </select>
+                </div>
+
+                <div class="col-md-5" id="teamNameGroup">
+                  <label class="form-label-custom"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name</label>
+                    <select class="form-select-custom" id="colC" required>
+                      <option value=""></option>
+                    </select>
+                </div>
+
+                <div class="col-md-7" id="institutionGroup">
+                  <label class="form-label-custom"><i class="fa-solid fa-building-columns"></i> สถาบัน / Institution</label>
+                    <select class="form-select-custom" id="colD">
+                      <option value=""></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team2">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 2</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA1"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA1" >
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB1"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB1">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC1"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC1">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD1"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD1">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team3">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 3</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA2"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA2">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB2"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB2">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC2"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC2">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD2"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD2">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team4">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 4</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA3"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA3">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB3"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB3">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC3"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC3">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD3"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD3">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team5">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 5</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA4"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA4">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB4"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB4">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC4"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC4">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD4"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD4">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team6">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 6</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA5"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA5">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB5"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB5">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC5"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC5">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD5"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD5">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team7">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 7</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA6"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA6">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB6"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB6">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC6"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC6">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD6"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD6">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team8">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 8</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA7"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA7">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB7"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB7">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC7"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC7">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD7"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD7">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team9">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 9</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA8"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA8">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB8"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB8">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC8"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC8">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD8"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD8">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-custom hidden-team" id="team10">
+            <div class="row  my-3 mx-auto">
+              <p class="fs-5 text-center mb-4 team-title"><strong>Team 10</strong></p>
+              <hr>
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colA9"><i class="fa-solid fa-podcast"></i> รุ่นอายุ / Age Group </p>
+                    <select class="form-control selectpicker show-tick" id="colA9">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 d-flex flex-column mb-3">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colB9"><i class="fa-solid fa-podcast"></i> ทีมไอดี / Team ID </p>
+                    <select class="form-control selectpicker show-tick" id="colB9">
+                      <option value="" selected='selected'>Choose</option>
+                    </select>
+                </div>
+              </div>
+                <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-5 d-flex flex-column mb-3" id="teamNameGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colC9"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name </p>
+                    <select class="form-control selectpicker show-tick" id="colC9">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 d-flex flex-column mb-3" id="institutionGroup" style="display: none;">
+                  <p class="fw-bold mb-1" style="font-size:18px; color:black;" for="colD9"><i class="fa-solid fa-city"></i> สถาบัน / Institution </p>
+                    <select class="form-control selectpicker show-tick" id="colD9">
+                      <option value="" selected='selected'></option>
+                    </select>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="card-custom">
@@ -450,7 +807,7 @@
 <!-- ---------------------------------------- script -------------------------------------------------- -->
 <script>
     // 1. ตั้งค่าเบื้องต้น
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-g6J80h6etivW4XWl0GfUbJTuljY29DKTHKF89ZLwhue_Biij0EA8MlLe3scj-W8X/exec"; 
+    const SCRIPT_URL = "ใส่_WEB_APP_URL_ที่ได้จาก_GAS_ตรงนี้"; 
     var globalPriceList = {};
     const imageMap = {
         default: 'http://gammaco.co.th/marketingform/wp-content/uploads/2025/04/Blank.png' 
