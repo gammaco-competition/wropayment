@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Form</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/190/190411.png?v=2" type="image/png">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(180deg, #f7faf9 0%, #e9f3ef 100%);
+      font-size: 16px;
+      color: #333;
+      padding-bottom: 60px;
+    }
+
+    .container-custom {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    /* Header หลักของหน้า */
+    .card-header-main {
+      background: linear-gradient(90deg, #006633, #008040);
+      color: white;
+      text-align: center;
+      border-radius: 15px 15px 0 0;
+      padding: 20px 10px;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .card-header-main p {
+      margin-bottom: 0;
+      font-size: 1.25rem;
+    }
+
+    /* การตั้งค่า Card หลัก (ยุบรวมแล้ว) */
+    .card-custom {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+      padding: 20px; /* เพิ่ม padding จากแบบเก่า */
+    }
+
+    .card-sub {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .choice-bg {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 100%;
+      margin: auto;
+    }
+
+    /* แถบหัวข้อภายใน Card ทีม */
+    .team-header-banner {
+      background: linear-gradient(135deg, #006633 0%, #2e7d32 100%);
+      color: white;
+      padding: 15px;
+      text-align: center;
+      margin: -20px -20px 20px -20px; /* ขยายให้ชิดขอบการ์ด */
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .card-body-padding {
+      padding: 5px 0; /* ปรับให้พอดีกับ card-custom padding */
+    }
+
+    /* ข้อความแจ้งเตือน */
+    .alert-info-text {
+      background-color: #fff5f5;
+      color: #e7180b;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+      border-left: 4px solid #e7180b;
+    }
+
+    /* Form Elements */
+    .form-label-custom {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .form-label-custom i {
+      color: #006633;
+      margin-right: 5px;
+    }
+
+    .form-select-custom {
+      display: block;
+      width: 100%;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      color: blue !important; /* ตามความต้องการเดิมของคุณ */
+      background-color: #f8f9fa;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .form-select-custom:focus {
+      border-color: #006633;
+      outline: 0;
+      box-shadow: 0 0 0 0.25rem rgba(0, 102, 51, 0.1);
+      background-color: #fff;
+    }
+
+    /* Drop Zone สำหรับอัปโหลด */
+    .drop-zone {
+      border: 2px dashed #ccc;
+      padding: 60px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 12px;
+      background-color: #fcfcfc;
+      transition: all 0.3s;
+    }
+
+    .drop-zone:hover { border-color: #006633; background-color: #f0f7f4; }
+
+    /* Utility */
+    .hidden-team { display: none; }
+
+    .card-footer-custom {
+      background: linear-gradient(90deg, #006633, #008040);
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 0 0 15px 15px;
+      font-size: 0.85rem;
+    }
+
+    #preview-image, #qrImage {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      margin: 10px auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+      .card-header-main p { font-size: 1.1rem; }
+      body { font-size: 14px; }
+      .drop-zone { padding: 40px 10px !important; }
+    }
+</style>
+
+  <body>
+    <div class="container-custom">
+    <div class="card-header-main">
+      <p><strong>ชำระเงินค่าลงทะเบียนแข่งขัน ฯ / Pay Registration</strong></p>
+    </div>
+    <!-- <div class="container-fluid">
+      <div class="form-group col-md-10 mx-auto">
+        <div class="card-header h4" style="background-color: #006633; color: white; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 10px 10px 0 0;">
+            <p class="fs-4 text-center mb-0"><strong>ชำระเงินค่าลงทะเบียนแข่งขัน ฯ / Pay registration</strong></p>
+        </div> -->
+<!-- --------------------------------------------- Form ------------------------------------------------------- -->
+        <form id="myForm" onsubmit="submitForm(); return false;">
+          <div class="card-custom" id="preface">
+            <p class="fs-6 mb-0"><strong><u>ขั้นตอนการชำระเงิน</u><span class="text-muted"> (Payment Procedure)</span></strong></p>
+            <br>
+              <p class="fs-6 mb-2"> ● เลือกจำนวนทีมที่ต้องการชำระเงิน 
+                <span style="color: red;">(ท่านสามารถชำระค่าลงทะเบียนได้มากกว่า 1 ทีม โดยทีมที่เลือกจะต้องมาจากสถาบันเดียวกันเท่านั้น)</span>
+                <span style="display: block; font-size: 0.8em; color: #babdbf; width: 90%; margin-top: 5px; padding-left: 20px;">
+                  Select the number of teams you wish to pay for (You can pay for more than one team, but the teams must be from the same institution).
+                </span>
+              </p>
+              <p class="fs-6 mb-2"> ● เลือกวิธีชำระเงิน โดยสามารถเลือกชำระผ่าน QR Code หรือ เลขบัญชีธนาคาร
+                <span style="display: block; font-size: 0.8em; color: #babdbf; width: 90%; margin-top: 5px; padding-left: 20px;">
+                  Choose the payment method. You can pay via QR Code or bank account number.
+                </span>
+              </p>
+              <p class="fs-6 mb-2"> ● อัพโหลดใบเสร็จ และเลือกขอใบกำกับภาษี หรือ ใบเสร็จรับเงิน หรือ ไม่ต้องการ และบันทึกข้อมูล
+                <span style="display: block; font-size: 0.8em; color: #babdbf; width: 90%; margin-top: 5px; padding-left: 20px;">
+                  Upload receipt and choose to request a tax invoice, receipt, or none, and save the information.
+                </span>
+              </p>
+              <p class="fs-6 mb-2"> ● หากท่านมีข้อสงสัยหรือสอบถามข้อมูลเพิ่มเติม สามารถติดต่อได้ที่เบอร์ 02-459-4731 ต่อ 232 หรือ Line OA : Events Gammaco (ในวันทำการ จันทร์-ศุกร์ เวลา 8.30 - 17.00 น.)
+                <span style="display: block; font-size: 0.8em; color: #babdbf; width: 90%; margin-top: 5px; padding-left: 20px;">
+                  If you have any questions or need further information, you can contact us at 02-459-4731 ext. 232 or via Line OA: Events Gammaco (Monday to Friday, 8:30 AM - 5:00 PM).
+                </span>
+              </p>
+              <hr>
+              <p class="fs-6 mb-3" style="color: red;"><i class="fa-regular fa-bookmark"></i><strong> เลือกจำนวนทีมที่ท่านต้องการชำระเงิน (Select the number of teams you want to pay for)</strong></p>
+
+                <div class="form-group col-md-4 d-flex flex-column mb-4">
+  <select id="teamCount" class="form-select-custom fs-5" onchange="showSelectedTeam()">
+    <option value="" selected disabled>-- กรุณาเลือกจำนวนทีม --</option>
+    <script>
+      for(let i=1; i<=10; i++) {
+        document.write(`<option value="${i}">${i} ทีม</option>`);
+      }
+    </script>
+  </select>
+</div>
+
+<div id="teamFormsContainer"></div>
+          </div>
+
+          <div class="card-custom">
+            <div class="row my-2 mx-auto">
+              <p id="priceDisplay" class="mt-3 fw-bold" style="font-size: 24px; padding: 10px 30px; text-align: right; color: red;"></p>
+              <hr>
+              <div class="form-group col-md-12 mb-3">
+                <p class="fw-bold custom-bold" style="font-size: 16px;"><i class="fa-solid fa-caret-right"></i> 
+                  เลือกวิธีชำระเงิน 
+                    <span style="color: #888; font-size: 16px;">(Choose a payment method)</span>
+                </p>
+
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="data6" id="qr" value="qr" required checked>
+                  <label class="form-check-label" for="qr" style="font-size: 16px;">
+                    ชำระด้วย QR Code / Payment with QR Code
+                  </label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="data6" id="acc" value="acc" required>
+                  <label class="form-check-label" for="acc" style="font-size: 16px;">
+                    ชำระผ่านบัญชีธนาคาร / Payment via bank transfer
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row my-2 mx-auto align-items-start" id="payment">
+              <hr>
+                <div class="col-auto">
+                  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f0/Krung_Thai_Bank_logo.svg/1200px-Krung_Thai_Bank_logo.svg.png" alt="Krung Thai Bank" style="width: 70px; height:     auto; margin-top: 10px;">
+                </div>
+                <div class="col">
+                  <p style="font-size: 16px;" class="mb-2"><strong>ธนาคารกรุงไทย / Krung Thai Bank</strong></p>
+                  <p style="font-size: 16px;" class="mb-2">ชื่อบัญชี : บริษัท แกมมาโก้ (ประเทศไทย) จำกัด / GAMMACO (THAILAND) CO.,LTD.</p>
+                  <p style="font-size: 16px;" class="mb-2">เลขบัญชี : 980-2-99645-9</p>
+                </div>
+            </div>
+            <br>
+            <div class="row  my-2 mx-auto" id="qrpay">
+              <hr>
+                <img id="qrImage" src="http://gammaco.co.th/marketingform/wp-content/uploads/2025/04/Blank.png" alt="QR Code" style="max-width: 250px; margin-left: 2em; margin-top: 1em;">
+            </div>
+<!-- ---------------------------------------- Upload File ------------------------------------------------- -->
+            <div class="row  my-2 mx-auto">
+              <div class="form-group col-md-12 d-flex flex-column mb-3">
+                <label for="file" class="fw-bold" style="font-size: 16px;">
+                  <i class="fas fa-upload"></i> อัพโหลดใบเสร็จค่าลงทะเบียน (Upload Pay Slip)
+                </label>
+                <br>
+                <div id="drop-zone" class="drop-zone text-center position-relative">
+                  <div class="upload-content">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                      <div class="upload-text">
+                        <strong>Upload a File</strong>
+                          <p>Drag and drop files here or click to upload</p>
+                      </div>
+                  </div>
+                    <img id="preview-image" src="" alt="Preview" class="preview-img d-none" />
+                      <input type="file" name="uploadfile" id="file" class="form-control d-none" required>
+                </div>
+              </div>
+            </div>
+          </div>
+<!-- ---------------------------------------- ออกใบเสร็จ ------------------------------------------------- -->
+  <div class="card-custom">
+            <div class="row my-2 mx-auto">
+  <!-- หัวข้อ Contact -->
+  <p class="fw-bold custom-bold" style="font-size: 16px;">
+                    <i class="fa-solid fa-caret-right"></i> ข้อมูลติดต่อ : 
+                    <span class="text-muted" style="font-size: 16px;">(Contact Details:)</span>
+                </p>
+
+  <!-- ชื่อ-สกุล -->
+  <div class="form-group col-md-5" id="contact_name">
+                    <label class="mb-2" for="data17" style="font-size: 16px;">
+                        <i class="fa-solid fa-circle-user"></i> ชื่อ-สกุล / Name-Surname <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="data17" placeholder="ชื่อ-นามสกุล" style="font-size: 16px;" required>
+                </div>
+
+  <!-- เบอร์โทรศัพท์ -->
+  <div class="form-group col-md-4" id="contact_phone">
+                    <label class="mb-2" for="data18" style="font-size: 16px;">
+                        <i class="fa-solid fa-phone"></i> เบอร์โทรศัพท์ / Phone No. <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="data18" placeholder="เบอร์โทรศัพท์ที่สามารถติดต่อได้" style="font-size: 16px;" required>
+                </div>
+
+  <!-- ไลน์ไอดี -->
+  <div class="form-group col-md-3" id="contact_lineid">
+                    <label class="mb-2" for="data55" style="font-size: 16px;">
+                        <i class="fa-brands fa-line"></i> ไลน์ไอดี / Line ID
+                    </label>
+                    <input type="text" class="form-control" id="data55" placeholder="Line ID" style="font-size: 16px;">
+                </div>
+            </div>
+<br>
+
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-12 mb-3">
+                  <p class="fw-bold custom-bold"><i class="fa-solid fa-caret-right"></i> การออกเอกสาร : <span class="text-muted"> (Document Issuance)</span> ? </p>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="data7" id="tax" value="ใบกำกับภาษี"required>
+                        <label class="form-check-label" for="tax"> ใบกำกับภาษี / Tax invoice</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="data7" id="bill" value="ใบเสร็จรับเงิน"required>
+                        <label class="form-check-label" for="bill"> ใบเสร็จรับเงิน / Receipt</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="data7" id="no" value="ไม่รับ"required>
+                        <label class="form-check-label" for="no"> ไม่ต้องการ / No</label>
+                    </div>
+                </div>
+              </div>
+              <div class="row  my-2 mx-auto" id="tax_choice">
+                <div class="form-group col-md-12 mb-3">
+                  <p class="fw-bold text-bold"><i class="fa-solid fa-caret-right"></i> บริษัทของท่าน เคยออกใบกำกับภาษีกับทางบริษัทฯ แล้วหรือไม่ <span class="text-muted">
+                    (Has your company previously issued a tax invoice to our company)</span>?</p>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="data8" id="yes" value="yes" >
+                        <label class="form-check-label" for="yes">เคย / Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="data8" id="no" value="no" >
+                        <label class="form-check-label" for="no">ไม่เคย / No</label>
+                    </div>
+                </div>
+              </div>
+<!-- ---------------------------------------- Name + Phone + Institution + Tax ID + Address ------------------------------------------------- -->
+              <div class="row  my-2 mx-auto">
+                <div class="form-group col-md-6 mb-3" id="tax_institution">
+                  <label class="mb-2" for="tax_institution"><i class="far fa-building"></i> ชื่อบริษัท / Company Name</label>
+                    <input type="text" class="form-control" id="data9" placeholder="ระบุชื่อหน่วยงาน / สถาบัน" >
+                </div>
+                <div class="form-group col-md-6" id="tax_id"> 
+                  <label class="mb-2" for="tax_id"><i class="far fa-address-card"></i> เลขประจำตัวผู้เสียภาษี / Tax ID</label>
+                    <input type="number" class="form-control" id="data10" placeholder="ระบุเลขที่ผู้เสียภาษี" minlength="13" maxlength="13">
+                </div>
+              </div>
+              <div class="row  my-2 mx-auto" id="tax_address">
+                <div class="form-group col-md-12 mb-2">
+                  <label class="mb-2" for="tax_address"><i class="fas fa-address-card"></i> ที่อยู่ / Address</label>
+                    <textarea class="form-control" rows="3" id="data11" placeholder="โปรดระบุที่อยู่"></textarea>
+                </div>
+              </div>
+<!-- -------------------------------ที่อยู่จัดส่งเอกสาร------------------------------------------ -->
+              <div class="row  my-2 mx-auto" id="document">
+                <div class="form-group col-md-12 mb-3">
+                  <p class="fw-bold"><i class="fas fa-home"></i> การจัดส่งเอกสาร <span class="text-muted"> (Document Delivery)</span></p>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="data12" id="id1" value="ตามใบเสร็จ" >
+                        <label class="form-check-label" for="id1">จัดส่งที่อยู่ตามใบเสร็จ <span class="text-muted"> (Address as per Receipt)</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="data12" id="id2" value="ที่อยู่ใหม่" >
+                        <label class="form-check-label" for="id2">ที่อยู่ใหม่ <span class="text-muted"> (New Address)</span></label>
+                    </div>
+                </div>
+              </div>
+<!-- -------------------------------ที่อยู่------------------------------------------ -->
+              <div class="row  my-2 mx-auto" >
+              <div class="form-group col-md-6" id="doc_name">
+                <label class="mb-2" for="doc_name"><i class="fas fa-user"></i> ชื่อ-สกุล / Name-Surname (ผู้รับเอกสาร)</label>
+                  <input type="text" class="form-control" id="data13" placeholder="Name">
+              </div>
+              <div class="form-group col-md-6" id="doc_phone">
+                <label class="mb-2" for="doc_phone"><i class="fas fa-mobile-alt"></i> เบอร์โทรศัพท์ / Phone No.</label>
+                  <input type="tel" class="form-control" id="data14" placeholder="เบอร์โทร" >
+              </div>
+            </div>
+            <div class="row  my-2 mx-auto" id="doc_address">
+              <div class="form-group col-md-12">
+                <label class="mb-2" for="doc_address"><i class="fas fa-address-card"></i> ที่อยู่ /  Address</label>
+                  <textarea class="form-control" rows="3" id="data15" placeholder="Address"></textarea>
+              </div>
+            </div>
+          </div>
+<!-- -------------------------------ยืนยัน------------------------------------------ -->
+        <div class="card-custom">
+          <div class="row  my-2 mx-auto">
+            <p class="row  my-2 mx-auto text-danger"> * โปรดตรวจสอบความถูกต้องก่อนทำการส่งข้อมูล <span class="text-muted">(Please verify the accuracy before submitting the information.)</span></p>
+              <div class="form-group col-md-12">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="data16" id="firm" value="Waiting"required>
+                    <label class="form-check-label" for="firm"><i class="far fa-check-circle"></i> ข้าพเจ้าได้กรอกข้อมูลครบถ้วนแล้ว <span class="text-muted">(I have completed filling out all the required information.)</span></label>
+                </div>
+              </div>
+          </div>
+        </div>
+        <br>          
+<!-- -------------------------------บันทึกข้อมูล------------------------------------------ -->
+        <div class="form-group text-center my-3">
+          <button type="submit" class="btn btn-danger btn-block" id="btn1"><i class="fas fa-save"></i>
+            บันทึกข้อมูล</button>
+        </div>
+        <div class="form-group text-center my-3">
+          <button class="btn btn-primary" id="btn2" type="button" disabled style="display : none">
+            <span class="spinner-grow spinner-grow-sm" role="status"></span>
+              กำลังอัปโหลด...
+          </button>
+        </div>
+        </form>
+<!-- ---------------------------------------- Footer -------------------------------------------------- -->
+        <p class="mb-0" style="font-size: 14px; font-weight: bold; text-align: right;">Ver. 2026-7.0</p>
+          <div class="card-footer" 
+            style="background: linear-gradient(90deg, #00744d, #00a36c); 
+            color: white; 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 0 0 10px 10px;">
+            <p class="text-center mb-0" style="font-size: 14px;">
+              <strong>Organized by Gammaco (Thailand) Co., LTD.</strong>
+            </p>
+          </div>
+        </div>
+    </div>
+  </body>
+<!-- ---------------------------------------- script -------------------------------------------------- -->
+<script>
+    // 1. ตั้งค่าเบื้องต้น
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxZIX3FCNAeOkmhv2jaZpuaqU2rdD3vcOQMEvIvJGCzrZqHMc7qytHbAoKB_IG6BgzR/exec"; 
+    var globalPriceList = {};
+    const imageMap = {
+        default: 'http://gammaco.co.th/marketingform/wp-content/uploads/2025/04/Blank.png' 
+    };
+
+    // ดึง userId/Profile จาก URL (สำหรับ GitHub Pages)
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId') || 'github_user';
+    const userProfile = urlParams.get('userProfile') || 'github_profile';
+
+    // 2. เริ่มต้นระบบเมื่อหน้าเว็บโหลด
+    document.addEventListener('DOMContentLoaded', function() {
+        // สร้าง Form 1-10 ทีม
+        const container = document.getElementById('teamFormsContainer');
+        let htmlContent = '';
+        for (let i = 1; i <= 10; i++) {
+            htmlContent += `
+              <div class="card-custom hidden-team" id="team${i}">
+                <div class="team-header-banner"><strong class="fs-5">Team ${i}</strong></div>
+                <div class="card-body-padding">
+                  <div class="alert-info-text"><i class="fa-solid fa-circle-info"></i> ประเภท Robomission และ Future Innovators: กรุณาเลือกรุ่นการแข่งขันของท่าน</div>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label-custom"><i class="fa-solid fa-graduation-cap"></i> รุ่นอายุ / Age Group</label>
+                      <select class="form-select-custom" id="colA${i}" required><option value="" selected>Choose</option></select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label-custom"><i class="fa-solid fa-id-badge"></i> ทีมไอดี / Team ID</label>
+                      <select class="form-select-custom" id="colB${i}" required><option value="" selected>Choose</option></select>
+                    </div>
+                    <div class="col-md-5">
+                      <label class="form-label-custom"><i class="fa-solid fa-pen-to-square"></i> ชื่อทีม / Team Name</label>
+                      <select class="form-select-custom" id="colC${i}" required><option value=""></option></select>
+                    </div>
+                    <div class="col-md-7">
+                      <label class="form-label-custom"><i class="fa-solid fa-building-columns"></i> สถาบัน / Institution</label>
+                      <select class="form-select-custom" id="colD${i}"><option value=""></option></select>
+                    </div>
+                  </div>
+                </div>
+              </div>`;
+        }
+        container.innerHTML = htmlContent;
+
+        // ดึงข้อมูลจาก GAS มาใส่ Dropdown
+        fetch(SCRIPT_URL)
+            .then(res => res.json())
+            .then(data => initDropdowns(data))
+            .catch(err => console.error("Fetch Error:", err));
+
+        // ตั้งค่า UI เริ่มต้น
+        setupInitialUI();
+    });
+
+    function setupInitialUI() {
+        toggleField("#tax_choice", false);
+        toggleField("#tax_id", false);
+        toggleField("#tax_institution", false);
+        toggleField("#tax_address", false);
+        toggleField("#document", false);
+        toggleField("#doc_name", false);
+        toggleField("#doc_phone", false);
+        toggleField("#doc_address", false);
+        toggleField("#qrpay", true);
+        toggleField("#payment", false);
+    }
+
+    // 3. ฟังก์ชันคำนวณเงิน
+    function calculateTotalPrice() {
+        const teamCount = parseInt(document.getElementById("teamCount").value) || 0;
+        let totalPrice = 0;
+        for (let i = 1; i <= teamCount; i++) {
+            let colB = document.getElementById("colB" + i);
+            if (colB && colB.value && colB.value !== "Choose") {
+                totalPrice += globalPriceList[colB.value.trim()] || 0;
+            }
+        }
+        const priceDisplay = document.getElementById("priceDisplay");
+        if (priceDisplay) {
+            priceDisplay.innerHTML = `► จำนวนเงินที่ชำระ : ${totalPrice.toLocaleString()} บาท`;
+            priceDisplay.style.color = totalPrice > 0 ? "#d9534f" : "#333";
+        }
+    }
+
+    // 4. ฟังก์ชันจัดการ Dropdown (Chained Dropdown)
+    function initDropdowns(receivedData) {
+        globalPriceList = receivedData.prices;
+        const dropdownObj = receivedData.dropdowns;
+        for(let i=1; i<=10; i++) {
+            dropDownList(dropdownObj, i.toString());
+        }
+    }
+
+    function dropDownList(obj, teamId) {
+        let a = document.getElementById(`colA${teamId}`), b = document.getElementById(`colB${teamId}`),
+            c = document.getElementById(`colC${teamId}`), d = document.getElementById(`colD${teamId}`);
+        if (!a || !b || !c || !d) return;
+
+        const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+        let optionsA = [...new Set(Object.keys(obj))].filter(x => x).sort(collator.compare);
+        optionsA.forEach(x => a.options[a.options.length] = new Option(x, x));
+
+        a.onchange = function() {
+            b.length = c.length = d.length = 1;
+            let sub = obj[this.value];
+            if (sub) {
+                let optionsB = Object.keys(sub).filter(y => y).sort(collator.compare);
+                optionsB.forEach(y => b.options[b.options.length] = new Option(y, y));
+            }
+            calculateTotalPrice();
+        };
+
+        b.onchange = function() {
+            calculateTotalPrice();
+            c.length = d.length = 1;
+            let sub = obj[a.value]?.[this.value];
+            if (sub) {
+                Object.keys(sub).forEach(z => c.options[c.options.length] = new Option(z, z));
+                if (c.options.length > 1) { c.selectedIndex = 1; c.dispatchEvent(new Event('change')); }
+            }
+        };
+
+        c.onchange = function() {
+            d.length = 1;
+            let sub = obj[a.value]?.[b.value]?.[this.value];
+            if (sub) {
+                Object.keys(sub).forEach(v => d.options[d.options.length] = new Option(v, v));
+                if (d.options.length > 1) d.selectedIndex = 1;
+            }
+        };
+    }
+
+    // 5. ฟังก์ชันส่งข้อมูล (Submit)
+    function submitForm() {
+        const file = document.getElementById("file").files[0];
+        if (!file) {
+            Swal.fire('กรุณาแนบไฟล์สลิป', '', 'warning');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+            // สร้างก้อนข้อมูล JSON
+            let fileData = {
+                userId: userId,
+                userProfile: userProfile,
+                imagedata: reader.result.split(',')[1],
+                filename: file.name,
+                filetype: file.type,
+                // ข้อมูลพื้นฐาน
+                data5: document.getElementById("teamCount").value,
+                data7: document.querySelector('input[name="data7"]:checked')?.value || "",
+                data8: document.querySelector('input[name="data8"]:checked')?.value || "",
+                data9: document.getElementById("data9").value,
+                data10: document.getElementById("data10").value,
+                data11: document.getElementById("data11").value,
+                data12: document.querySelector('input[name="data12"]:checked')?.value || "",
+                data13: document.getElementById("data13").value,
+                data14: document.getElementById("data14").value,
+                data15: document.getElementById("data15").value,
+                data16: document.querySelector('input[name="data16"]:checked')?.value || "",
+                data17: document.getElementById("data17").value,
+                data18: document.getElementById("data18").value,
+                data55: document.getElementById("data55").value,
+                // ข้อมูลทีม 1
+                data1: document.getElementById("colA1").value,
+                data2: document.getElementById("colB1").value,
+                data3: document.getElementById("colC1").value,
+                data4: document.getElementById("colD1").value
+            };
+
+            // วนลูปเก็บข้อมูลทีม 2-10 ลง data19-data54 ตามลำดับใน Sheet
+            let map = {2:19, 3:23, 4:27, 5:31, 6:35, 7:39, 8:43, 9:47, 10:51};
+            for (let i in map) {
+                let start = map[i];
+                fileData['data' + start] = document.getElementById("colA" + i).value;
+                fileData['data' + (start+1)] = document.getElementById("colB" + i).value;
+                fileData['data' + (start+2)] = document.getElementById("colC" + i).value;
+                fileData['data' + (start+3)] = document.getElementById("colD" + i).value;
+            }
+
+            // เช็ค ID ซ้ำ
+            let ids = [fileData.data2, fileData.data20, fileData.data24, fileData.data28, fileData.data32, fileData.data36, fileData.data40, fileData.data44, fileData.data48, fileData.data52].filter(v => v);
+            if (new Set(ids).size !== ids.length) {
+                Swal.fire('คุณใส่ Team ID ซ้ำ', 'โปรดตรวจสอบอีกครั้ง', 'error');
+                return;
+            }
+
+            Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            // ส่ง Fetch POST ไปที่ GAS
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify(fileData)
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.result) {
+                    Swal.fire({ title: 'สำเร็จ!', icon: 'success', timer: 2000, showConfirmButton: false }).then(() => {
+                        clearForm();
+                        window.scrollTo(0,0);
+                    });
+                } else { throw new Error(); }
+            })
+            .catch(() => Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'error'));
+        };
+    }
+
+    // 6. ฟังก์ชัน UI อื่นๆ (คงเดิมจากต้นฉบับ)
+    function showSelectedTeam() {
+        const teamCount = parseInt(document.getElementById("teamCount").value) || 0;
+        for (let i = 1; i <= 10; i++) {
+            const teamDiv = document.getElementById("team" + i);
+            if (teamDiv) {
+                if (i <= teamCount) {
+                    teamDiv.classList.remove("hidden-team");
+                    teamDiv.style.display = "block";
+                } else {
+                    teamDiv.classList.add("hidden-team");
+                    teamDiv.style.display = "none";
+                    document.getElementById("colA" + i).value = "";
+                    document.getElementById("colB" + i).value = "";
+                }
+            }
+        }
+        calculateTotalPrice();
+    }
+
+    function toggleField(fieldId, shouldShow, isRequired = false) {
+        const el = $(fieldId);
+        shouldShow ? el.show() : el.hide();
+        el.find('input, select, textarea').prop('required', isRequired && shouldShow);
+    }
+
+    // Event Listeners สำหรับ Toggles
+    $(function() {
+        $("input:radio[name='data6']").change(function() {
+            toggleField("#qrpay", this.value === "qr", true);
+            toggleField("#payment", this.value === "acc", true);
+        });
+        $("input:radio[name='data7']").change(function() {
+            toggleField("#tax_choice", this.value === "ใบกำกับภาษี", true);
+            toggleField("#tax_institution", this.value === "ใบเสร็จรับเงิน", true);
+            toggleField("#tax_address", this.value === "ใบเสร็จรับเงิน", true);
+            toggleField("#document", this.value !== "ไม่รับ", true);
+        });
+        $("input:radio[name='data8']").change(function() {
+            toggleField("#tax_id", true, true);
+            toggleField("#tax_institution", true, true);
+            toggleField("#tax_address", this.value === "no", true);
+        });
+        $("input:radio[name='data12']").change(function() {
+            toggleField("#doc_name", true, true);
+            toggleField("#doc_phone", true, true);
+            toggleField("#doc_address", this.value === "ที่อยู่ใหม่", true);
+        });
+    });
+
+    // ส่วนของ Drop-zone (คงเดิม)
+    const dropZone = document.getElementById("drop-zone");
+    const fileInput = document.getElementById("file");
+    dropZone.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", function() {
+        const file = this.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('preview-image').src = e.target.result;
+                document.getElementById('preview-image').classList.remove('d-none');
+                document.querySelector('.upload-content').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function clearForm() {
+        document.getElementById("myForm").reset();
+        document.getElementById("teamFormsContainer").querySelectorAll('select').forEach(s => s.length = 1);
+        document.getElementById('preview-image').classList.add('d-none');
+        document.querySelector('.upload-content').style.display = 'block';
+        document.getElementById("priceDisplay").innerHTML = '';
+        showSelectedTeam();
+        setupInitialUI();
+    }
+</script>
+</html>
