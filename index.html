@@ -806,21 +806,19 @@
   </body>
 <!-- ---------------------------------------- script -------------------------------------------------- -->
 <script>
-    // 1. ตั้งค่าเบื้องต้น
-    const SCRIPT_URL = "ใส่_WEB_APP_URL_ที่ได้จาก_GAS_ตรงนี้"; 
+    // 1. ตั้งค่าพื้นฐาน
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-g6J80h6etivW4XWl0GfUbJTuljY29DKTHKF89ZLwhue_Biij0EA8MlLe3scj-W8X/exec"; 
     var globalPriceList = {};
-    const imageMap = {
-        default: 'http://gammaco.co.th/marketingform/wp-content/uploads/2025/04/Blank.png' 
-    };
+    const imageMap = { default: 'http://gammaco.co.th/marketingform/wp-content/uploads/2025/04/Blank.png' };
 
-    // ดึง userId/Profile จาก URL (สำหรับ GitHub Pages)
+    // รับค่า User จาก URL (เนื่องจาก GitHub เป็น Static Page)
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userId') || 'github_user';
     const userProfile = urlParams.get('userProfile') || 'github_profile';
 
-    // 2. เริ่มต้นระบบเมื่อหน้าเว็บโหลด
+    // 2. เมื่อหน้าเว็บโหลดเสร็จ
     document.addEventListener('DOMContentLoaded', function() {
-        // สร้าง Form 1-10 ทีม
+        // สร้าง Card ฟอร์มสำหรับ 10 ทีมแบบอัตโนมัติ
         const container = document.getElementById('teamFormsContainer');
         let htmlContent = '';
         for (let i = 1; i <= 10; i++) {
@@ -850,32 +848,18 @@
                 </div>
               </div>`;
         }
-        container.innerHTML = htmlContent;
+        if(container) container.innerHTML = htmlContent;
 
-        // ดึงข้อมูลจาก GAS มาใส่ Dropdown
+        // ดึงข้อมูลตั้งต้นจาก Google Sheets
         fetch(SCRIPT_URL)
             .then(res => res.json())
             .then(data => initDropdowns(data))
-            .catch(err => console.error("Fetch Error:", err));
-
-        // ตั้งค่า UI เริ่มต้น
+            .catch(err => console.error("โหลดข้อมูลไม่สำเร็จ:", err));
+        
         setupInitialUI();
     });
 
-    function setupInitialUI() {
-        toggleField("#tax_choice", false);
-        toggleField("#tax_id", false);
-        toggleField("#tax_institution", false);
-        toggleField("#tax_address", false);
-        toggleField("#document", false);
-        toggleField("#doc_name", false);
-        toggleField("#doc_phone", false);
-        toggleField("#doc_address", false);
-        toggleField("#qrpay", true);
-        toggleField("#payment", false);
-    }
-
-    // 3. ฟังก์ชันคำนวณเงิน
+    // 3. ฟังก์ชันคำนวณราคาสุทธิ
     function calculateTotalPrice() {
         const teamCount = parseInt(document.getElementById("teamCount").value) || 0;
         let totalPrice = 0;
@@ -889,10 +873,11 @@
         if (priceDisplay) {
             priceDisplay.innerHTML = `► จำนวนเงินที่ชำระ : ${totalPrice.toLocaleString()} บาท`;
             priceDisplay.style.color = totalPrice > 0 ? "#d9534f" : "#333";
+            priceDisplay.style.fontWeight = "bold";
         }
     }
 
-    // 4. ฟังก์ชันจัดการ Dropdown (Chained Dropdown)
+    // 4. ฟังก์ชันจัดการ Dropdowns (Natural Sorting)
     function initDropdowns(receivedData) {
         globalPriceList = receivedData.prices;
         const dropdownObj = receivedData.dropdowns;
@@ -902,11 +887,13 @@
     }
 
     function dropDownList(obj, teamId) {
-        let a = document.getElementById(`colA${teamId}`), b = document.getElementById(`colB${teamId}`),
-            c = document.getElementById(`colC${teamId}`), d = document.getElementById(`colD${teamId}`);
-        if (!a || !b || !c || !d) return;
+        const a = document.getElementById(`colA${teamId}`), b = document.getElementById(`colB${teamId}`),
+              c = document.getElementById(`colC${teamId}`), d = document.getElementById(`colD${teamId}`);
+        if (!a) return;
 
+        a.length = b.length = c.length = d.length = 1; 
         const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+
         let optionsA = [...new Set(Object.keys(obj))].filter(x => x).sort(collator.compare);
         optionsA.forEach(x => a.options[a.options.length] = new Option(x, x));
 
@@ -922,7 +909,7 @@
 
         b.onchange = function() {
             calculateTotalPrice();
-            c.length = d.length = 1;
+            c.length = d.length = 1; 
             let sub = obj[a.value]?.[this.value];
             if (sub) {
                 Object.keys(sub).forEach(z => c.options[c.options.length] = new Option(z, z));
@@ -940,7 +927,7 @@
         };
     }
 
-    // 5. ฟังก์ชันส่งข้อมูล (Submit)
+    // 5. ฟังก์ชันหลักในการส่งข้อมูล (Submit)
     function submitForm() {
         const file = document.getElementById("file").files[0];
         if (!file) {
@@ -951,15 +938,22 @@
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function() {
-            // สร้างก้อนข้อมูล JSON
             let fileData = {
                 userId: userId,
                 userProfile: userProfile,
                 imagedata: reader.result.split(',')[1],
                 filename: file.name,
                 filetype: file.type,
-                // ข้อมูลพื้นฐาน
+                // ข้อมูลพื้นฐานและทีม 1
+                data1: document.getElementById("colA1").value,
+                data2: document.getElementById("colB1").value,
+                data3: document.getElementById("colC1").value,
+                data4: document.getElementById("colD1").value,
                 data5: document.getElementById("teamCount").value,
+                // ข้อมูลติดต่อและภาษี
+                data17: document.getElementById("data17").value,
+                data18: document.getElementById("data18").value,
+                data55: document.getElementById("data55").value,
                 data7: document.querySelector('input[name="data7"]:checked')?.value || "",
                 data8: document.querySelector('input[name="data8"]:checked')?.value || "",
                 data9: document.getElementById("data9").value,
@@ -969,68 +963,58 @@
                 data13: document.getElementById("data13").value,
                 data14: document.getElementById("data14").value,
                 data15: document.getElementById("data15").value,
-                data16: document.querySelector('input[name="data16"]:checked')?.value || "",
-                data17: document.getElementById("data17").value,
-                data18: document.getElementById("data18").value,
-                data55: document.getElementById("data55").value,
-                // ข้อมูลทีม 1
-                data1: document.getElementById("colA1").value,
-                data2: document.getElementById("colB1").value,
-                data3: document.getElementById("colC1").value,
-                data4: document.getElementById("colD1").value
+                data16: document.querySelector('input[name="data16"]:checked')?.value || ""
             };
 
-            // วนลูปเก็บข้อมูลทีม 2-10 ลง data19-data54 ตามลำดับใน Sheet
-            let map = {2:19, 3:23, 4:27, 5:31, 6:35, 7:39, 8:43, 9:47, 10:51};
+            // วนลูปเก็บข้อมูลทีม 2-10 ลง data19 - data54
+            const map = { 2:19, 3:23, 4:27, 5:31, 6:35, 7:39, 8:43, 9:47, 10:51 };
             for (let i in map) {
                 let start = map[i];
-                fileData['data' + start] = document.getElementById("colA" + i).value;
-                fileData['data' + (start+1)] = document.getElementById("colB" + i).value;
-                fileData['data' + (start+2)] = document.getElementById("colC" + i).value;
-                fileData['data' + (start+3)] = document.getElementById("colD" + i).value;
+                fileData['data' + start] = document.getElementById("colA" + i)?.value || "";
+                fileData['data' + (start+1)] = document.getElementById("colB" + i)?.value || "";
+                fileData['data' + (start+2)] = document.getElementById("colC" + i)?.value || "";
+                fileData['data' + (start+3)] = document.getElementById("colD" + i)?.value || "";
             }
 
-            // เช็ค ID ซ้ำ
-            let ids = [fileData.data2, fileData.data20, fileData.data24, fileData.data28, fileData.data32, fileData.data36, fileData.data40, fileData.data44, fileData.data48, fileData.data52].filter(v => v);
-            if (new Set(ids).size !== ids.length) {
+            // เช็ค Team ID ซ้ำ
+            let idsToCheck = [fileData.data2, fileData.data20, fileData.data24, fileData.data28, fileData.data32, fileData.data36, fileData.data40, fileData.data44, fileData.data48, fileData.data52].filter(v => v && v !== "");
+            if (new Set(idsToCheck).size !== idsToCheck.length) {
                 Swal.fire('คุณใส่ Team ID ซ้ำ', 'โปรดตรวจสอบอีกครั้ง', 'error');
                 return;
             }
 
-            Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
-            // ส่ง Fetch POST ไปที่ GAS
             fetch(SCRIPT_URL, {
                 method: "POST",
                 body: JSON.stringify(fileData)
             })
             .then(res => res.json())
             .then(res => {
+                Swal.close();
                 if (res.result) {
-                    Swal.fire({ title: 'สำเร็จ!', icon: 'success', timer: 2000, showConfirmButton: false }).then(() => {
-                        clearForm();
-                        window.scrollTo(0,0);
-                    });
+                    Swal.fire({ title: 'สำเร็จ!', icon: 'success', timer: 2000, showConfirmButton: false })
+                    .then(() => { clearForm(); window.scrollTo(0,0); });
                 } else { throw new Error(); }
             })
-            .catch(() => Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'error'));
+            .catch(() => {
+                Swal.close();
+                Swal.fire('ผิดพลาด', 'บันทึกไม่สำเร็จ', 'error');
+            });
         };
     }
 
-    // 6. ฟังก์ชัน UI อื่นๆ (คงเดิมจากต้นฉบับ)
+    // 6. ฟังก์ชันจัดการ UI (Toggle/Show Teams)
     function showSelectedTeam() {
-        const teamCount = parseInt(document.getElementById("teamCount").value) || 0;
+        const count = parseInt(document.getElementById('teamCount').value) || 0;
         for (let i = 1; i <= 10; i++) {
-            const teamDiv = document.getElementById("team" + i);
-            if (teamDiv) {
-                if (i <= teamCount) {
-                    teamDiv.classList.remove("hidden-team");
-                    teamDiv.style.display = "block";
-                } else {
-                    teamDiv.classList.add("hidden-team");
-                    teamDiv.style.display = "none";
-                    document.getElementById("colA" + i).value = "";
-                    document.getElementById("colB" + i).value = "";
+            const el = document.getElementById(`team${i}`);
+            if (el) {
+                if (i <= count) { el.classList.remove('hidden-team'); el.style.display = "block"; }
+                else { 
+                  el.classList.add('hidden-team'); el.style.display = "none";
+                  if(document.getElementById(`colA${i}`)) document.getElementById(`colA${i}`).value = "";
+                  if(document.getElementById(`colB${i}`)) document.getElementById(`colB${i}`).value = "";
                 }
             }
         }
@@ -1040,10 +1024,23 @@
     function toggleField(fieldId, shouldShow, isRequired = false) {
         const el = $(fieldId);
         shouldShow ? el.show() : el.hide();
-        el.find('input, select, textarea').prop('required', isRequired && shouldShow);
+        el.find('input, select, textarea').prop('required', shouldShow && isRequired);
     }
 
-    // Event Listeners สำหรับ Toggles
+    function setupInitialUI() {
+        toggleField("#tax_choice", false);
+        toggleField("#tax_id", false);
+        toggleField("#tax_institution", false);
+        toggleField("#tax_address", false);
+        toggleField("#document", false);
+        toggleField("#doc_name", false);
+        toggleField("#doc_phone", false);
+        toggleField("#doc_address", false);
+        toggleField("#qrpay", true);
+        toggleField("#payment", false);
+    }
+
+    // jQuery Events สำหรับ Radio
     $(function() {
         $("input:radio[name='data6']").change(function() {
             toggleField("#qrpay", this.value === "qr", true);
@@ -1067,31 +1064,35 @@
         });
     });
 
-    // ส่วนของ Drop-zone (คงเดิม)
-    const dropZone = document.getElementById("drop-zone");
-    const fileInput = document.getElementById("file");
-    dropZone.addEventListener("click", () => fileInput.click());
-    fileInput.addEventListener("change", function() {
-        const file = this.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('preview-image').src = e.target.result;
-                document.getElementById('preview-image').classList.remove('d-none');
-                document.querySelector('.upload-content').style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
+    // 7. เคลียร์ฟอร์ม
     function clearForm() {
         document.getElementById("myForm").reset();
-        document.getElementById("teamFormsContainer").querySelectorAll('select').forEach(s => s.length = 1);
-        document.getElementById('preview-image').classList.add('d-none');
-        document.querySelector('.upload-content').style.display = 'block';
         document.getElementById("priceDisplay").innerHTML = '';
+        const previewImg = document.getElementById('preview-image');
+        if(previewImg) { previewImg.src = ''; previewImg.classList.add('d-none'); }
+        document.querySelector('.upload-content').style.display = 'block';
         showSelectedTeam();
         setupInitialUI();
+    }
+
+    // Drag and Drop (คงเดิม)
+    const dropZone = document.getElementById("drop-zone");
+    const fileInput = document.getElementById("file");
+    if(dropZone) {
+      dropZone.addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", function() {
+          const file = this.files[0];
+          if (file && file.type.startsWith('image/')) {
+              const reader = new FileReader();
+              reader.onload = e => {
+                  const previewImg = document.getElementById('preview-image');
+                  previewImg.src = e.target.result;
+                  previewImg.classList.remove('d-none');
+                  document.querySelector('.upload-content').style.display = 'none';
+              };
+              reader.readAsDataURL(file);
+          }
+      });
     }
 </script>
 </html>
